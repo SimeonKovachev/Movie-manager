@@ -1,0 +1,118 @@
+﻿@using Store1.Models
+@using Store1.Data;
+@model Movie
+
+
+@{
+    ViewData["Title"] = "Delete Movie";
+}
+<div class="row">
+    <div class="col-md-8 offset-2">
+        <p>
+            <h4 class="text-danger text-center" style=" text-shadow: 1px 1px 4px #000;">Do you really want to delete @Model.Name?</h4>
+        </p>
+
+        <div class="row">
+            <div class="col-md-8 offset-2">
+               
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                     
+                    <div class="row">
+                        
+                        <div class="col-md-6">
+                            
+                            <div class="form-group">
+                                <label asp-for="Name" class="control-label"></label>
+                                <input asp-for="Name" class="form-control" readonly />
+                                <span asp-validation-for="Name" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="StartDate" class="control-label"></label>
+                                <input asp-for="StartDate" type="date" class="form-control" readonly />
+                                <span asp-validation-for="StartDate" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="EndDate" class="control-label"></label>
+                                <input asp-for="EndDate" type="date" class="form-control" readonly />
+                                <span asp-validation-for="EndDate" class="text-danger"></span>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label asp-for="ImageURL" class="control-label"></label>
+                                <input asp-for="ImageURL" class="form-control" readonly />
+                                <span asp-validation-for="ImageURL" class="text-danger"></span>
+                            </div>
+                          
+                        
+                           <div class="form-group mt-1">
+                               Cinema:
+                                <a asp-controller="Cinemas" asp-action="Details" asp-route-id="@Model.CinemaId" style="text-decoration:none">
+                                @Model.Cinema.Name
+                            </a>
+                           
+                            </div>
+                            <div class="form-group">
+                                Movie_Category:
+                                <a asp-controller="Movie_Category" asp-action="Details" asp-route-id="@Model.MovieCategory" style="text-decoration:none">
+                                @Model.MovieCategory
+                            </a>
+                            </div>
+                            <div class="form-group">
+                                Producer:
+                                  <a asp-controller="Producers" asp-action="Details" asp-route-id="@Model.ProducerId" style="text-decoration:none">
+                                @Model.Producer.FullName
+                            </a>
+                            </div>
+                            <div class="form-group ">
+                                Actor:
+                                 @foreach (var actor in Model.Actors_Movies)
+                                {
+                                 <a asp-controller="Actors" asp-action="Details" asp-route-id="@actor.ActorId" style="display: inline-block; text-decoration:none" >@actor.Actor.FullName</a>
+                                }
+                          
+                            </div>  
+                         </div>
+                         <div class="col-md-5">
+                         <div>
+                            <img width="100%" id="ImageUrlPreview" />
+                             </div>
+                         </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label asp-for="Description" class="control-label"></label>
+                                <textarea asp-for="Description" class="form-control" readonly></textarea>
+                                <span asp-validation-for="Description" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                   
+
+                    <div class="form-group my-3 my-lg-2">
+                        <form asp-action="Delete">
+                            <input type="hidden" asp-for="Id" />
+                            <input type="submit" value="Confirm" class="btn btn-danger float-end" />
+                        </form>
+                        <a class="btn btn-outline-secondary" asp-action="Index">Show All</a>
+                    </div>
+
+               
+
+            </div>
+        </div>
+
+    </div>
+</div>
+
+@section Scripts{ 
+    <script>
+        $(document).ready(function () {
+            var output = document.getElementById("ImageUrlPreview");
+            output.src = $("#ImageURL").val();
+        });
+        $("#ImageURL").on("change", function () {
+            var output = document.getElementById("ImageUrlPreview");
+            output.src = $(this).val();
+        })
+    </script>
+}
